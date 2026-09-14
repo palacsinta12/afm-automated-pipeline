@@ -1,0 +1,17 @@
+LICENSE
+README.MD
+pyproject.toml
+afm_marker_recognition.egg-info/PKG-INFO
+afm_marker_recognition.egg-info/SOURCES.txt
+afm_marker_recognition.egg-info/dependency_links.txt
+afm_marker_recognition.egg-info/entry_points.txt
+afm_marker_recognition.egg-info/requires.txt
+afm_marker_recognition.egg-info/top_level.txt
+src/__init__.py
+src/correction.py
+src/image_ops.py
+src/inference.py
+src/navigation.py
+src/parser.py
+src/visualize.py
+tests/test_repo_metadata.py

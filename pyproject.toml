@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "afm-marker-recognition"
+version = "0.1.0"
+description = "Automated AFM data acquisition, correction, segmentation, and digit inference pipeline."
+readme = "README.MD"
+requires-python = ">=3.9"
+authors = [
+  { name = "AFM Marker Recognition" }
+]
+license = { file = "LICENSE" }
+keywords = ["AFM", "image-processing", "digit-recognition", "synthetic-data"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Image Processing",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "numpy",
+  "scipy",
+  "scikit-image",
+  "matplotlib",
+  "gwyfile",
+]
+
+[project.optional-dependencies]
+inference = [
+  "tensorflow",
+]
+test = [
+  "pytest>=7",
+]
+
+dev = [
+  "pytest>=7",
+  "ruff",
+  "black",
+]
+
+[project.scripts]
+afmpipeline = "main:run_cli"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

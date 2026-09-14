@@ -1,0 +1,33 @@
+# Byte-compiled / cache files
+__pycache__/
+*.pyc
+
+# Proprietary / NDA Data & Lab files
+*.safm
+data/afm/
+leadni/
+afm_leadni.zip
+
+# University working documents & reports
+*.pdf
+*.pptx
+*.html
+*.ipynb
+
+# Loose debug images in the root directory (clean repo look)
+accuracy.png
+alignment.png
+bounding_boxes.png
+final_digits.png
+heatmap.png
+loss.png
+marker_detection.png
+scan_correction.png
+
+# Ignore all loose docs images and real lab results
+docs/images/*.png
+docs/images/test_lab/
+
+# Only allow the synthetic demonstration images
+!docs/images/test_synthetic/
+!docs/images/test_synthetic/**

@@ -1,0 +1,16 @@
+numpy
+scipy
+scikit-image
+matplotlib
+gwyfile
+
+[dev]
+pytest>=7
+ruff
+black
+
+[inference]
+tensorflow
+
+[test]
+pytest>=7

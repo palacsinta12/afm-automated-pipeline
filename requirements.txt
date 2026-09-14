@@ -1,0 +1,7 @@
+# Runtime requirements for the AFM marker recognition pipeline
+numpy
+scipy
+scikit-image
+tensorflow
+matplotlib
+gwyfile

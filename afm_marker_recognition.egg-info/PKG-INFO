@@ -1,0 +1,122 @@
+Metadata-Version: 2.4
+Name: afm-marker-recognition
+Version: 0.1.0
+Summary: Automated AFM data acquisition, correction, segmentation, and digit inference pipeline.
+Author: AFM Marker Recognition
+License: MIT License
+        
+        Copyright (c) 2026 AFM Marker Recognition
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Keywords: AFM,image-processing,digit-recognition,synthetic-data
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: scikit-image
+Requires-Dist: matplotlib
+Requires-Dist: gwyfile
+Provides-Extra: inference
+Requires-Dist: tensorflow; extra == "inference"
+Provides-Extra: test
+Requires-Dist: pytest>=7; extra == "test"
+Provides-Extra: dev
+Requires-Dist: pytest>=7; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Dynamic: license-file
+
+# 🔬 Automated AFM Data Acquisition & Processing Pipeline
+
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg?style=for-the-badge&logo=python&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00.svg?style=for-the-badge&logo=tensorflow&logoColor=white)
+![Scikit-Image](https://img.shields.io/badge/Scikit--Image-Image%20Processing-lightgrey.svg?style=for-the-badge)
+![NumPy](https://img.shields.io/badge/NumPy-Data%20Math-013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Production_Ready-success.svg?style=for-the-badge)
+
+An automated computer vision and deep learning pipeline designed to process raw Atomic Force Microscopy (AFM) data, mathematically correct physical scan artifacts at the nanoscale, and utilize a Convolutional Neural Network (CNN) to read microscopic etched navigation markers.
+
+---
+
+## 📖 Overview
+
+Atomic Force Microscopy (AFM) generates high-resolution nanoscale topography maps. However, raw AFM data is frequently plagued by system-induced physical artifacts, such as sample tilt (non-orthogonal tip approach) and thermal/piezo drift (horizontal stripe noise). 
+
+This project completely automates the evaluation pipeline:
+1. **Data Parsing:** Handles both proprietary `.safm` files and simulated `.npy` matrices.
+2. **Nanoscale Scan Correction:** Employs Masked Plane and Line Correction algorithms to mathematically flatten the substrate *without* distorting the physical structural data.
+3. **Morphological Segmentation:** Uses Otsu thresholding and morphological operations (erosion/dilation) to isolate micro-etched navigation markers.
+4. **Deep Learning Inference:** Preprocesses extracted digits (aspect-ratio scaling, Center-of-Mass alignment) and classifies them using a custom CNN trained on the MNIST dataset.
+
+---
+
+## 🔒 Data Privacy & Synthetic AFM Generation (Overcoming NDA)
+
+Due to Non-Disclosure Agreements (NDA) regarding the physical samples used in the laboratory, the raw proprietary `.safm` files cannot be published in this public repository. 
+
+To make this project fully reproducible, I engineered a **physics-based AFM scan synthesizer** (`scripts/generate_synthetic_afm.py`). This generator simulates:
+* **Sample Tilt:** Global gradient addition simulating a non-orthogonal tip approach.
+* **Piezo Actuator Artifacts:** Row-by-row offset noise mimicking physical scanning errors.
+* **Tip Convolution:** Gaussian blurring to simulate the finite radius of the physical AFM tip.
+* **Structural Etching:** Uses actual MNIST digits arrayed around a navigational cross-marker, subjected to random physical rotations and mirroring.
+
+The pipeline's custom parser seamlessly handles both the internal `.safm` format and the public synthetic `.npy` format.
+
+---
+
+## 🖼️ Pipeline Showcase
+
+### 1. Masked Plane & Line Correction
+Raw high-resolution scans exhibit extreme global tilt and piezo line artifacts. By computing a gradient-based background mask, we fit a correction plane *only to the flat substrate*, resulting in a perfectly flattened topography that preserves the etched numbers.
+<p align="center">
+  <!-- REPLACE THE SRC LINK WITH YOUR ACTUAL IMAGE PATH ONCE UPLOADED -->
+  <img src="docs/images/scan_correction.png" width="800" alt="Masked Scan Correction"/>
+</p>
+
+### 2. Feature Extraction & Alignment
+The digits are extracted using bounding-box filtering to ignore oversized structures (like the central navigation cross). The image is programmatically rotated and mirrored based on the detected orientation of the marker.
+<p align="center">
+  <!-- REPLACE THE SRC LINK WITH YOUR ACTUAL IMAGE PATH ONCE UPLOADED -->
+  <img src="docs/images/extraction.png" width="800" alt="Feature Extraction"/>
+</p>
+
+### 3. CNN Digit Recognition & Center-of-Mass Fix
+The digits are isolated, blurred to mimic MNIST stroke gradients, and centered by their **Center of Mass** (a critical step for bridging the gap between AFM data and the MNIST distribution, preventing issues like confusing a '2' with a '5'). The CNN then classifies the sequence with high confidence.
+<p align="center">
+  <!-- REPLACE THE SRC LINK WITH YOUR ACTUAL IMAGE PATH ONCE UPLOADED -->
+  <img src="docs/images/cnn_results.png" width="800" alt="CNN Probabilities"/>
+</p>
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone & Install
+Clone the repository and install the required dependencies:
+```bash
+git clone https://github.com/YourUsername/afm-digit-recognition.git
+cd afm-digit-recognition
+pip install -r requirements.txt
